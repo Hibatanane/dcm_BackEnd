@@ -5,9 +5,10 @@ import org.springframework.stereotype.Repository;
 import prjt.dcm.Entities.User;
 
 @Repository
-public interface UserRepository extends JpaRepository<User,Long>
-{
+public interface UserRepository extends JpaRepository<User, Long> {
     User findUserByEmail(String email);
-   User findUserByIdUser(long id);
+
+    User findUserByIdUser(long id);
+
 
 }
