@@ -13,7 +13,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import prjt.dcm.Security.JwtService;
 import java.io.IOException;
 import java.util.logging.Logger;
 @Component
@@ -43,10 +42,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         logger.info("Attempting authentication for user: " + userEmail);
         if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
-            System.out.println("User Details : "+userDetails);
-            System.out.println("Jwt : "+jwt);
-            System.out.println("Condition jwt : "+jwtService.isTokenValid(jwt, userDetails) );
-            System.out.println("Secuirty context : "+SecurityContextHolder.getContext().getAuthentication());
             if (jwtService.isTokenValid(jwt, userDetails)) {
                 logger.info("Authentication successful for user: " + userEmail);
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(

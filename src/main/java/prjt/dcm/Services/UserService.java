@@ -39,18 +39,8 @@ public class UserService implements UserDetailsService {
 
     private final JwtService jwtService;
 
-private final AuthenticationManager authenticationManager;
-    public String login(String email, String mdp) {
-        User user = userRepository.findUserByEmail(email);
-        if (user == null) {
+    private final AuthenticationManager authenticationManager;
 
-            return "introuvable";
-        } else {
-            if (!user.getMdp().equals(mdp))
-                return "incorrect";
-        }
-        return "succes";
-    }
 
     public String recupererMdp(String email) throws MessagingException {
         User user = userRepository.findUserByEmail(email);
@@ -72,7 +62,7 @@ private final AuthenticationManager authenticationManager;
     public String changerMdp(String email, String mdp) {
         User user = userRepository.findUserByEmail(email);
         if (user != null) {
-            user.setMdp(mdp);
+            user.setMdp(passwordEncoder().encode(mdp));
             userRepository.save(user);
             return "200";
         }
@@ -99,13 +89,6 @@ private final AuthenticationManager authenticationManager;
                 .roles(user.getRole().getNom()).build();
 
         return userDetails;
-    }
-
-    public void ajouterUser() {
-        User u1 = new User();
-        u1.setMdp(passwordEncoder().encode("hiba"));
-        u1.setEmail("hiba.tanane@gmail.com");
-        userRepository.save(u1);
     }
 
     public AuthenticationResponse register() {

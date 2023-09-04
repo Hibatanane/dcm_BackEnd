@@ -1,8 +1,7 @@
 package prjt.dcm.Controllers;
 
 import lombok.RequiredArgsConstructor;
-import okhttp3.Response;
-import org.springframework.http.HttpHeaders;
+import java.util.logging.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.ui.Model;
@@ -10,15 +9,12 @@ import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import prjt.dcm.Dto.AuthenticationResponse;
 import prjt.dcm.Dto.RegisterDTO;
 import prjt.dcm.Dto.UserDTO;
 import prjt.dcm.Entities.User;
-import prjt.dcm.Security.JwtService;
+import prjt.dcm.Security.JwtAuthenticationFilter;
 import prjt.dcm.Services.UserService;
 import org.springframework.security.core.Authentication;
 
@@ -31,32 +27,13 @@ public class UserController {
     private UserService userService;
     @Autowired
     private AuthenticationManager authenticationManager;
+    private static final Logger logger = Logger.getLogger(JwtAuthenticationFilter.class.getName());
+
 
 
     public Authentication authentication(Authentication authentication) {
-
         return authentication;
     }
-
-    @GetMapping("/login")
-    public String showLoginForm(Model model) {
-        model.addAttribute("userDTO", new UserDTO());
-        return "login";
-    }
-
-    @GetMapping("/")
-    public String showLogin(Model model) {
-        model.addAttribute("userDTO", new UserDTO());
-        return "login";
-    }
-
-    @PostMapping("/register")
-    public ResponseEntity<AuthenticationResponse> creerUser(
-            @RequestBody RegisterDTO registerDTO
-    ) {
-        return null;
-    }
-
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody UserDTO userDTO) {
         AuthenticationResponse rep = userService.authenticate(userDTO);
@@ -66,7 +43,6 @@ public class UserController {
 
             return ResponseEntity.ok(rep);
         }
-        System.out.println("info incorrectes");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Données incorrectes");
     }
 
@@ -88,8 +64,8 @@ public class UserController {
     @GetMapping("/sayHello")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<String> sayHello() {
-        System.out.println("SAY HELLO ");
-        return ResponseEntity.ok("Say Hello");
+        logger.info("Méthode sayhello executée");
+        return ResponseEntity.ok("Say Hello est bien affiché");
     }
 
 
