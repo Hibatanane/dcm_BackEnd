@@ -11,7 +11,7 @@ public class DcmApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(DcmApplication.class, args);
-		System.out.println("test");
+		System.out.println("Application DCM");
 	}
 
 }

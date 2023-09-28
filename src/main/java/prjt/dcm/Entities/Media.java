@@ -6,7 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.util.*;
 
 @Entity
 @NoArgsConstructor
@@ -21,11 +22,27 @@ public class Media {
     private String statut;
     private String version;
     private String extension;
-    private Date date;
+    private LocalDate date;
     private String description;
-    private int taille;
+    private long taille;
     private String chemin;
+    private String typeMedia;
+    @OneToMany(mappedBy = "media", cascade = CascadeType.ALL)
+    private List<MotCle> motCles = new ArrayList<>();
     @ManyToOne
     @JoinColumn(name = "idUser")
     private User userM;
+    public Media(Media media)
+    {
+this();
+this.nom=media.getNom();
+this.statut=media.getStatut();
+this.version=media.getVersion();
+this.extension=media.getExtension();
+this.date=media.getDate();
+this.description=media.getDescription();
+this.taille=media.getTaille();
+this.typeMedia=media.getTypeMedia();
+this.userM=media.getUserM();
+    }
 }

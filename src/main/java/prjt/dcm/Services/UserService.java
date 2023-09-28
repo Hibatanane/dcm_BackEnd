@@ -110,7 +110,7 @@ public class UserService implements UserDetailsService {
                         .token(jwtToken)
                         .build();
             } else {
-                // Retourner null si l'utilisateur n'est pas trouvé (peut-être gérer cela différemment si nécessaire)
+                // Retourner null si l'utilisateur n'est pas trouvé
                 return null;
             }
         } catch (AuthenticationException e) {
