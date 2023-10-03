@@ -175,4 +175,15 @@ public class MediaController {
         return ResponseEntity.status(HttpStatus.OK).body(dimensionDTO);
     }
 
+    @PostMapping("/modifierMedia")
+    public ResponseEntity<ApiResponse> modifierMedia(@RequestParam("idMedia") long idMedia,
+                                                     @RequestParam("nom") String nom,
+                                                     @RequestParam("description") String description,
+                                                     @RequestParam("statut") String statut,
+                                                     @RequestParam("version") String version,
+                                                     @RequestParam("motsCles") List<String> motsCles) {
+        return ResponseEntity.status(HttpStatus.OK).body(mediaService.modifierMedia(idMedia, nom, description, statut, version, motsCles));
+
+    }
+
 }

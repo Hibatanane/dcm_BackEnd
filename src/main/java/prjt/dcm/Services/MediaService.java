@@ -4,31 +4,24 @@ import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import io.minio.*;
 import io.minio.errors.*;
-
-
 import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
 import org.apache.commons.compress.utils.IOUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDDocumentInformation;
 import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.common.PDRectangle;
+import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.apache.poi.xslf.usermodel.XMLSlideShow;
 import org.apache.poi.xslf.usermodel.XSLFSlide;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.xwpf.usermodel.Document;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
-import org.apache.poi.xwpf.usermodel.XWPFParagraph;
-import org.bytedeco.javacv.FFmpegFrameGrabber;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
-import org.springframework.data.relational.core.sql.In;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import prjt.dcm.Configurations.MailConfig;
 import prjt.dcm.Dto.ApiResponse;
 import prjt.dcm.Dto.DimensionDTO;
 import prjt.dcm.Dto.MediaDTO;
@@ -42,14 +35,14 @@ import prjt.dcm.Repositories.UserRepository;
 import prjt.dcm.Sender.MailSender;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.awt.image.RenderedImage;
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigInteger;
-import java.net.MalformedURLException;
-import java.util.zip.*;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -330,11 +323,10 @@ public class MediaService {
         DimensionDTO dimension = new DimensionDTO(0, 0);
         try {
             BufferedImage image = ImageIO.read(new URL(mediaUrl));
-            if(image!=null)
-            {
+            if (image != null) {
                 dimension.setLargeur(image.getWidth());
                 dimension.setLongueur(image.getHeight());
-                System.out.println("Width : "+image.getWidth());
+                System.out.println("Width : " + image.getWidth());
             }
 
         } catch (MalformedURLException e) {
@@ -466,5 +458,25 @@ public class MediaService {
         return mediaDTO;
     }
 
-
+    public ApiResponse modifierMedia(long idMedia,
+                                     String nom,
+                                     String description,
+                                     String statut,
+                                     String version,
+                                     List<String> motsCles) {
+        Media media = mediaRepository.findByIdMedia(idMedia);
+        media.setVersion(version);
+        media.setNom(nom);
+        media.setStatut(statut);
+        media.setDescription(description);
+        media.getMotCles().clear();
+        for (String motCleStr : motsCles) {
+            MotCle motCle = new MotCle();
+            motCle.setMotCle(motCleStr);
+            motCle.setMedia(media);
+            media.getMotCles().add(motCle);
+        }
+        mediaRepository.save(media);
+        return new ApiResponse("envoyé", 200);
+    }
 }

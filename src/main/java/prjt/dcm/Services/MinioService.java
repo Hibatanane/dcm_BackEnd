@@ -35,8 +35,8 @@ public class MinioService {
             );
         } catch (Exception e) {
             e.printStackTrace();
-            throw new prjt.dcm.Exceptions.MinioException("Oops ! il y a eu un problème au niveau du serveur ");
         }
+        return "erreur";
     }
     public void supprimerObject(String bucketName,String chemin)
     {
