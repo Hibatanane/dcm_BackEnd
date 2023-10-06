@@ -42,7 +42,7 @@ public class SecurityConfig {
                 .csrf()
                 .disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/api/login","/api/mdpOublie","/api/reinitialiserMdp","/minio/**")
+                .requestMatchers("/api/login","/api/mdpOublie","/api/reinitialiserMdp","/minio/**","/role/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated()

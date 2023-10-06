@@ -18,7 +18,6 @@ import prjt.dcm.Repositories.MotCleRepository;
 import prjt.dcm.Repositories.UserRepository;
 import prjt.dcm.Services.MediaService;
 
-import java.awt.*;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -92,11 +91,6 @@ public class MediaController {
         return mediaService.addDocument(file, nom, description, version, statut, motsCles, email);
     }
 
-    @GetMapping("/{idMedia}")
-    public ResponseEntity<MediaDTO> recupererMedia(@PathVariable Long idMedia) {
-        System.out.println("Execution de la methode getMediaById : " + idMedia);
-        return ResponseEntity.ok(mediaService.getMediaById(idMedia));
-    }
 
     @GetMapping("/recupererMedias")
     public ResponseEntity<List<MediaDTO>> recupererMedias(//@RequestParam("email")
@@ -111,11 +105,16 @@ public class MediaController {
             bucketName = bucketNameDocument;
         else
             bucketName = bucketNamePictos;
-        User user = userRepository.findUserByEmail("hiba.tanane@gmail.com");
+        User user = userRepository.findUserByEmail("hiba.tanane21@gmail.com");
         List<MediaDTO> mediaDtos = mediaService.getMedias(user.getIdUser(), media, bucketName);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         return new ResponseEntity<>(mediaDtos, headers, HttpStatus.OK);
+    }
+
+    @GetMapping("/{idMedia}")
+    public ResponseEntity<MediaDTO> recupererMedia(@PathVariable Long idMedia) {
+        return new ResponseEntity<>(mediaService.getMediaById(idMedia), HttpStatus.OK);
     }
 
     @PostMapping("/supprimerMedias")
@@ -147,7 +146,7 @@ public class MediaController {
                                                     @RequestParam("subject") String subject,
                                                     @RequestParam("body") String body,
                                                     @RequestParam("url") List<String> url) {
-        ApiResponse response = mediaService.envoyerEmail("hiba.tanane@gmail.com", to, subject, body, url);
+        ApiResponse response = mediaService.envoyerEmail("hiba.tanane21@gmail.com", to, subject, body, url);
         if ("envoyer".equals(response.getMessage()))
             return ResponseEntity.status(HttpStatus.OK).body(response);
         else
@@ -185,5 +184,6 @@ public class MediaController {
         return ResponseEntity.status(HttpStatus.OK).body(mediaService.modifierMedia(idMedia, nom, description, statut, version, motsCles));
 
     }
+
 
 }

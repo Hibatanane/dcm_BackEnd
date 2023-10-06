@@ -5,16 +5,8 @@ import com.cloudinary.utils.ObjectUtils;
 import io.minio.*;
 import io.minio.errors.*;
 import jakarta.mail.MessagingException;
-import org.apache.commons.compress.utils.IOUtils;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDDocumentInformation;
-import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.pdmodel.PDPageContentStream;
-import org.apache.pdfbox.pdmodel.common.PDRectangle;
-import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.apache.poi.xslf.usermodel.XMLSlideShow;
 import org.apache.poi.xslf.usermodel.XSLFSlide;
-import org.apache.poi.xwpf.usermodel.Document;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -36,7 +28,6 @@ import prjt.dcm.Sender.MailSender;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -401,6 +392,7 @@ public class MediaService {
                 MotCle mc = new MotCle();
                 mc.setMotCle(motCle.getMotCle());
                 mc.setMedia(mediaADupliquer);
+                motCleRepository.save(mc);
             }
             try {
                 minioClient.copyObject(
@@ -469,7 +461,7 @@ public class MediaService {
         media.setNom(nom);
         media.setStatut(statut);
         media.setDescription(description);
-        media.getMotCles().clear();
+        motCleRepository.deleteAllByIdMedia(media.getIdMedia());
         for (String motCleStr : motsCles) {
             MotCle motCle = new MotCle();
             motCle.setMotCle(motCleStr);
@@ -477,6 +469,7 @@ public class MediaService {
             media.getMotCles().add(motCle);
         }
         mediaRepository.save(media);
-        return new ApiResponse("envoyé", 200);
+        return new ApiResponse("modifié", 200);
     }
+
 }

@@ -1,23 +1,16 @@
-package prjt.dcm.Entities;
+package prjt.dcm.Dto;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
-@Entity
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
-public class Role {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+@AllArgsConstructor
+@NoArgsConstructor
+public class RoleDTO {
     private long idRole;
-    @Column(unique = true)
     private String nom;
     private String statut;
     private String description;
@@ -34,10 +27,4 @@ public class Role {
     private boolean ajouterRole;
     private boolean modifierRole;
     private boolean supprimerRole;
-    //Relation : Dans un rôle, il y a n users
-    @OneToMany(mappedBy = "role", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    private List<User> userR;
-
-
 }
-
