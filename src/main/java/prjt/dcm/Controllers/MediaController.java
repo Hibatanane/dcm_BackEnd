@@ -53,7 +53,7 @@ public class MediaController {
                                String email
     ) throws Exception {
 
-        return mediaService.addImageOrVideo(file, description, version, statut, motsCles, "image", email);
+        return mediaService.addImageOrVideo(file, description, version, statut, motsCles, "image", "hiba.tanane21@gmail.com");
     }
 
     @PostMapping("/insererVideo")
@@ -65,7 +65,7 @@ public class MediaController {
                                String email
     ) throws Exception {
 
-        return mediaService.addImageOrVideo(file, description, version, statut, motsCles, "video", email);
+        return mediaService.addImageOrVideo(file, description, version, statut, motsCles, "video", "hiba.tanane21@gmail.com");
     }
 
     @PostMapping("/insererPictos")
@@ -76,7 +76,7 @@ public class MediaController {
                                 String email
     ) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
 
-        return mediaService.addPictos(file, description, nom, motsCles, email);
+        return mediaService.addPictos(file, description, nom, motsCles, "hiba.tanane21@gmail.com");
     }
 
     @PostMapping("/insererDocument")
@@ -88,7 +88,7 @@ public class MediaController {
                                   @RequestParam("statut") String statut,
                                   String email) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
 
-        return mediaService.addDocument(file, nom, description, version, statut, motsCles, email);
+        return mediaService.addDocument(file, nom, description, version, statut, motsCles, "hiba.tanane21@gmail.com");
     }
 
 

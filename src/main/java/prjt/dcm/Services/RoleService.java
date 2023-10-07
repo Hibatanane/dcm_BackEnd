@@ -16,6 +16,32 @@ public class RoleService {
     @Autowired
     private RoleRepository roleRepository;
 
+public RoleDTO recupererRole(long idRole)
+{
+
+    Role role = roleRepository.findByIdRole(idRole);
+    RoleDTO roleDTO = new RoleDTO();
+    roleDTO.setIdRole(role.getIdRole());
+    roleDTO.setNom(role.getNom());
+    roleDTO.setStatut(role.getStatut());
+    roleDTO.setDescription(role.getDescription());
+    roleDTO.setImporter(role.isImporter());
+    roleDTO.setModifier(role.isModifier());
+    roleDTO.setDupliquer(role.isDupliquer());
+    roleDTO.setSupprimer(role.isSupprimer());
+    roleDTO.setTelecharger(role.isTelecharger());
+    roleDTO.setCopier(role.isCopier());
+    roleDTO.setPartager(role.isPartager());
+    roleDTO.setAjouterUser(role.isAjouterUser());
+    roleDTO.setModifierUser(role.isModifierUser());
+    roleDTO.setSupprimerUser(role.isSupprimerUser());
+    roleDTO.setAjouterRole(role.isAjouterRole());
+    roleDTO.setModifierRole(role.isModifierRole());
+    roleDTO.setSupprimerRole(role.isSupprimerRole());
+    return roleDTO;
+
+}
+
     public List<RoleDTO> recupererRoles() {
         List<Role> roles = roleRepository.findAll();
         List<RoleDTO> rolesDTO = new ArrayList<>();
@@ -56,21 +82,43 @@ public class RoleService {
 
     }
 
+
     public ApiResponse ajouterRole(RoleDTO roleDTO) {
-        String nom = roleRepository.findRoleByNom(roleDTO.getNom().toLowerCase());
-        if (nom != null) {
-            return new ApiResponse("Le rôle existe déjà", 409);
-        }
-        Role role = creerOuModifierRole(roleDTO);
+        Role test = roleRepository.findRoleByNom(roleDTO.getNom().toLowerCase());
+       if(test!=null)
+       {
+           if (test.getNom() != null) {
+               return new ApiResponse("Le rôle existe déjà", 409);
+           }
+       }
+        Role role = creerOuModifierRole(roleDTO,new Role());
         roleRepository.save(role);
         return new ApiResponse("Role ajouté", 201);
     }
 
-    public Role creerOuModifierRole(RoleDTO roleDTO) {
+    public ApiResponse modifierRole(RoleDTO roleDTO) {
+        Role role = roleRepository.findRoleByNom(roleDTO.getNom());
+        if(role!=null)
+{
+    if (role.getNom() != null && role.getIdRole() != roleDTO.getIdRole()) {
+        return new ApiResponse("Le rôle existe déjà.", 409);
+    } else {
+        role = creerOuModifierRole(roleDTO,role);
+        roleRepository.save(role);
+        return new ApiResponse("Rôle modifié", 200);
+    }
+}
+        role = roleRepository.findByIdRole(roleDTO.getIdRole());
+        role = creerOuModifierRole(roleDTO,role);
+        roleRepository.save(role);
+        return new ApiResponse("Rôle modifié", 200);
 
-        Role role = new Role();
+    }
+    public Role creerOuModifierRole(RoleDTO roleDTO,Role role)
+    {
         role.setNom(roleDTO.getNom().toLowerCase());
-        if (roleDTO.getStatut().equals("true")) {
+        if (roleDTO.getStatut().equals("true"))
+        {
             role.setStatut("Activé");
 
         } else {
@@ -93,4 +141,5 @@ public class RoleService {
         role.setSupprimerRole(roleDTO.isSupprimerRole());
         return role;
     }
+
 }

@@ -73,7 +73,6 @@ public class UserService implements UserDetailsService {
         return userRepository.findUserByIdUser(id);
     }
 
-
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         System.out.println("Execution de methode loadUserByUserName ");
@@ -82,7 +81,7 @@ public class UserService implements UserDetailsService {
         if (user != null) {
             System.out.println(user.getRole().getNom());
         }
-        if (user == null) throw new UsernameNotFoundException(String.format("User %s not found", email));
+        if (user == null) throw new UsernameNotFoundException(String.format("Utilisateur %s non retrouvé", email));
         UserDetails userDetails = org.springframework.security.core.userdetails.User
                 .withUsername(user.getEmail())
                 .password(user.getMdp())

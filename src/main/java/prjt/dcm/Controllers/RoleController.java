@@ -37,6 +37,14 @@ public class RoleController {
         return new ApiResponse("supprimé", 200);
     }
 
+    @GetMapping("/recupererRole/{idRole}")
+    public ResponseEntity<RoleDTO> recupererRole(@PathVariable long idRole) {
+        System.out.println("execution de méthode get role by id ");
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        return new ResponseEntity<>(roleService.recupererRole(idRole), headers, HttpStatus.OK);
+    }
+
     @PostMapping("/ajouterRole")
     public ResponseEntity<ApiResponse> ajouterRole(@RequestBody RoleDTO roleDTO) {
         ApiResponse apiResponse = roleService.ajouterRole(roleDTO);
@@ -49,7 +57,13 @@ public class RoleController {
             return ResponseEntity.status(HttpStatus.CREATED).headers(headers).body(apiResponse);
 
         }
+    }
 
-
+    @PostMapping("/modifierRole")
+    public ResponseEntity<ApiResponse> modifierRole(@RequestBody RoleDTO roleDTO) {
+        ApiResponse apiResponse = roleService.modifierRole(roleDTO);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        return new ResponseEntity<>(apiResponse, headers, HttpStatus.OK);
     }
 }

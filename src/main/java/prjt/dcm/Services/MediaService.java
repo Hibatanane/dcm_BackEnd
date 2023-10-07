@@ -79,7 +79,7 @@ public class MediaService {
         UUID uuid = UUIDGenerator.generateUniqueUUID();
         String uuidString = uuid.toString();
         Media media = new Media();
-        User user = userRepository.findUserByEmail("hiba.tanane@gmail.com");
+        User user = userRepository.findUserByEmail("hiba.tanane21@gmail.com");
         String chemin = file.getOriginalFilename();
         int index = chemin.lastIndexOf(".");
         String extension = chemin.substring(index + 1).toLowerCase();
@@ -164,7 +164,7 @@ public class MediaService {
         UUID uuid = UUIDGenerator.generateUniqueUUID();
         String uuidString = uuid.toString();
         Media media = new Media();
-        User user = userRepository.findUserByEmail("hiba.tanane@gmail.com");
+        User user = userRepository.findUserByEmail("hiba.tanane21@gmail.com");
         String chemin = file.getOriginalFilename();
         int index = chemin.lastIndexOf(".");
         String extension = chemin.substring(index + 1).toLowerCase();
@@ -221,7 +221,7 @@ public class MediaService {
         String uuidString = uuid.toString();
         Media media = new Media();
         //User user = userRepository.findUserByEmail(email);
-        User user = userRepository.findUserByEmail("hiba.tanane@gmail.com");
+        User user = userRepository.findUserByEmail("hiba.tanane21@gmail.com");
         String chemin = file.getOriginalFilename();
         int index = chemin.lastIndexOf(".");
         String extension = chemin.substring(index + 1).toLowerCase();

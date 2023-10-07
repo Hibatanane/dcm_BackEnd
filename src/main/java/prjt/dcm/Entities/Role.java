@@ -17,7 +17,6 @@ public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idRole;
-    @Column(unique = true)
     private String nom;
     private String statut;
     private String description;
